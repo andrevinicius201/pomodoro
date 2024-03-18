@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-export default function WarningModal({ sendDataToParent, message }) {
+export default function WarningModal({ sendDataToParent }) {
   const [open, setOpen] = useState(true)
 
   const cancelButtonRef = useRef(null)
@@ -50,7 +50,7 @@ export default function WarningModal({ sendDataToParent, message }) {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          {message}
+                          It is not possible to edit an ongoing timer. Feel free to restart it if needed
                         </p>
                       </div>
                     </div>

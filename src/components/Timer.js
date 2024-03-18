@@ -6,6 +6,10 @@ export default class Timer extends Component {
 
     constructor(){
         super()
+
+        this.disabledButtonClass = "w-3/6 mt-4 text-white font-bold py-2 px-4 rounded border-b-4 md:w-2/6 lg:w-2/6 xl:w-1/6 2xl:w-1/6 bg-gray-300 cursor-not-allowed opacity-50"
+        this.enabledButtonClass = "w-3/6 mt-4 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded md:w-2/6 lg:w-2/6 xl:w-1/6 2xl:w-1/6"
+
         this.controlTimer=this.controlTimer.bind(this);
         this.startTimer=this.startTimer.bind(this);
         this.resumeTimer=this.resumeTimer.bind(this);
@@ -22,8 +26,10 @@ export default class Timer extends Component {
             initiated: false,
             buttonMessage: "Start timer",
             disableSetupFieldButton: false,
+            disableStartButtonStatus: false,
+            disableRestartButtonStatus: true,
             showModal: false,
-            modalMessage: "You need to set up the desired time before proceed"
+            restartButtonClass: this.disabledButtonClass
         };
         this.audioButtonReference = createRef();
         this.timeOverAudioReference = createRef();
@@ -59,8 +65,7 @@ export default class Timer extends Component {
             if(this.state.minutes > 0){
                 this.startTimer()
             } else {
-                let msg="You need to set up the desired time before proceed"
-                this.handleShowModalStatus(true, msg)
+                this.handleShowModalStatus(true)
             }
             
         }
@@ -87,7 +92,9 @@ export default class Timer extends Component {
         ); 
         this.changeButonStatus("Pause")
         this.setState({
-            disableSetupFieldButton: true
+            disableSetupFieldButton: true,
+            disableRestartButtonStatus: false,
+            restartButtonClass: this.enabledButtonClass
         })
     }
 
@@ -113,10 +120,12 @@ export default class Timer extends Component {
     stopTimer(){
         this.setState({
             initiated: false,
-            runnnig: false
+            runnnig: false,
+            disableRestartButtonStatus: true
         })
         this.playTimeOverAudio()
         this.changeButonStatus("Start timer")
+        
     }
 
     zeroPad = (num, places) => String(num).padStart(places, '0')
@@ -184,29 +193,17 @@ export default class Timer extends Component {
                 
 
                 
-                    <button onClick={this.controlTimer} className="w-3/6 mt-4 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded md:w-2/6 lg:w-2/6 xl:w-1/6 2xl:w-1/6">
+                    <button onClick={this.controlTimer} disabled={this.state.disableStartButtonStatus} className="w-3/6 mt-4 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded md:w-2/6 lg:w-2/6 xl:w-1/6 2xl:w-1/6">
                         {
                             this.state.buttonMessage
                         }
                     </button>
-                    <button onClick={this.refreshPage} className="w-3/6 mt-4 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded md:w-2/6 lg:w-2/6 xl:w-1/6 2xl:w-1/6">
-                        {/* <div className="flex flex-wrap"> */}
-                            
-                            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-1/12 h-1/5">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                            </svg> */}
-
-                            <span>
-                                Restart timer
-                            </span>
-                            
-                        {/* </div> */}
-  
+                    <button onClick={this.refreshPage} disabled={this.state.disableRestartButtonStatus} className={this.state.restartButtonClass}>
+                        Restart
                     </button>
-                
 
-
-                {this.state.showModal && <WarningModal sendDataToParent={this.handleShowModalStatus} message={this.state.modalMessage}/>}
+                   
+                {this.state.showModal && <WarningModal sendDataToParent={this.handleShowModalStatus}/>}
                 
             </div>
                                 
