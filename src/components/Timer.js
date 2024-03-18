@@ -113,7 +113,7 @@ export default class Timer extends Component {
         })
         this.timerID = setInterval(
             () => this.tick(),
-            10
+            1000
         );
         this.changeButonStatus("Pause")
     }
