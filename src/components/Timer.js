@@ -23,7 +23,7 @@ export default class Timer extends Component {
             buttonMessage: "Start timer",
             disableSetupFieldButton: false,
             showModal: false,
-            modalMessage: "Testando"
+            modalMessage: "You need to set up the desired time before proceed"
         };
         this.audioButtonReference = createRef();
         this.timeOverAudioReference = createRef();
