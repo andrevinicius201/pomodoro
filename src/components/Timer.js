@@ -29,7 +29,8 @@ export default class Timer extends Component {
             disableStartButtonStatus: false,
             disableRestartButtonStatus: true,
             showModal: false,
-            restartButtonClass: this.disabledButtonClass
+            restartButtonClass: this.disabledButtonClass,
+            timerCompleted: false
         };
         this.audioButtonReference = createRef();
         this.timeOverAudioReference = createRef();
@@ -112,7 +113,7 @@ export default class Timer extends Component {
         })
         this.timerID = setInterval(
             () => this.tick(),
-            1000
+            10
         );
         this.changeButonStatus("Pause")
     }
@@ -121,7 +122,8 @@ export default class Timer extends Component {
         this.setState({
             initiated: false,
             runnnig: false,
-            disableRestartButtonStatus: true
+            disableStartButtonStatus: true,
+            timerCompleted: true
         })
         this.playTimeOverAudio()
         this.changeButonStatus("Start timer")
@@ -193,7 +195,7 @@ export default class Timer extends Component {
                 
 
                 
-                    <button onClick={this.controlTimer} disabled={this.state.disableStartButtonStatus} className="w-3/6 mt-4 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded md:w-2/6 lg:w-2/6 xl:w-1/6 2xl:w-1/6">
+                    <button onClick={this.controlTimer} disabled={this.state.timerCompleted} className="w-3/6 mt-4 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded md:w-2/6 lg:w-2/6 xl:w-1/6 2xl:w-1/6">
                         {
                             this.state.buttonMessage
                         }
